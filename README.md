@@ -9,4 +9,4 @@
 + test：用于存放某些案例脚本的单元测试文件
 
 ### 案例一：手机价格预测
-
+项目地址：https://github.com/davidsongtao/llm_demos/tree/master/1_phone_price_prediction
