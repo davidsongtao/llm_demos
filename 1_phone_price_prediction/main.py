@@ -8,6 +8,8 @@ Description: 手机几个预测案例实现，项目主要实现步骤如下：
 @Time     ：2024/8/28 上午9:37
 @Contact  ：king.songtao@gmail.com
 """
+from torch.optim.lr_scheduler import StepLR
+
 # 第1步 --> 导入必要的包
 from configs.log_config import *  # 日志管理系统
 from torch.utils.data import TensorDataset, DataLoader
@@ -28,6 +30,8 @@ def data_preprocess(file_path):
         # 将csv文件数据进行切片，前20列作为特征值，最后一列作为目标值
         x, y = data.iloc[:, :-1], data.iloc[:, -1]
         # 特征值目标值类型转换
+        if not all(data[col].dtype in [np.float64, np.int64] for col in data.columns):
+            logger.warning("数据包含非数值类型，尝试转换")
         x = x.astype(np.float32)
         y = y.astype(np.int64)
         # 训练集验证机数据划分
@@ -39,6 +43,15 @@ def data_preprocess(file_path):
         train_dataloader = DataLoader(train_dataset, shuffle=True, batch_size=8, drop_last=False)
         valid_dataloader = DataLoader(valid_dataset, shuffle=True, batch_size=8, drop_last=False)
         return train_dataloader, valid_dataloader, valid_dataset
+    except FileNotFoundError:
+        logger.error(f"文件 {file_path} 不存在")
+        return None, None, None
+    except pd.errors.EmptyDataError:
+        logger.error(f"文件 {file_path} 为空")
+        return None, None, None
+    except pd.errors.ParserError:
+        logger.error(f"解析文件 {file_path} 时出错")
+        return None, None, None
     except Exception as e:
         logger.error(f"创建数据集时发生错误，错误信息：{e}")
         return None, None, None
@@ -55,7 +68,10 @@ def train(train_dataloader):
     # 初始化训练轮次
     epoch = param.epoch
     model.train()
-
+    # 初始化学习率调整器
+    scheduler = StepLR(optimizer, step_size=30, gamma=0.1)
+    # 初始化开始时间
+    start_time_all = time.time()
     # 两个遍历，开始模型训练
     try:
         # logger.success("模型及数据加载成功，开始训练...")
@@ -69,7 +85,7 @@ def train(train_dataloader):
                 loss = criterion(output, y)  # 计算损失值
                 if torch.isnan(loss):
                     logger.error("损失值为Nan,可能存在数值不稳定问题，请检查！")
-                    exit()
+                    raise ValueError("损失值为Nan，训练无法继续")
                 optimizer.zero_grad()  # 梯度归零
                 loss.backward()  # 反向传播
                 optimizer.step()  # 参数更新
@@ -77,15 +93,19 @@ def train(train_dataloader):
             # 一个轮次训练完成，输出结果
             end_time = time.time()
             if (epoch_index + 1) % 10 == 0:
+                scheduler.step()
                 logger.info(f"当前Epoch:{epoch_index + 1}, 当前总loss:{total_loss:.2f}, 本轮次用时：{end_time - start_time:.2f}秒")
     except Exception as e:
         logger.error(f"模型训练时发生错误，错误信息：{e}")
     # 所有轮次训练完成，保存模型
     try:
+        os.makedirs(os.path.dirname(param.save_model), exist_ok=True)
         torch.save(model.state_dict(), param.save_model)
         logger.success(f"模型保存成功！")
     except Exception as e:
         logger.error(f"保存模型错误，错误信息：{e}")
+    finally:
+        logger.info(f"训练完成，共耗时：{(time.time() - start_time_all):.2f}秒")
 
 
 def evaluation(valid_dataloader, valid_dataset):

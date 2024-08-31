@@ -16,5 +16,5 @@ class ParametersConfig(object):
         self.log_directory = r"D:\Projects\llm_demos\logs"
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.lr = 1e-3
-        self.epoch = 2000
+        self.epoch = 200
         self.save_model = f'D:\\Projects\\llm_demos\\1_phone_price_prediction\\models\\phone_lr{self.lr}_epoch{self.epoch}.pth'
