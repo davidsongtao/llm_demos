@@ -69,13 +69,15 @@ def train(train_dataloader):
     epoch = param.epoch
     model.train()
     # 初始化学习率调整器
-    scheduler = StepLR(optimizer, step_size=30, gamma=0.1)
+    # scheduler = StepLR(optimizer, step_size=30, gamma=0.1)
     # 初始化开始时间
     start_time_all = time.time()
+    time_epoch_10 = 0
     # 两个遍历，开始模型训练
     try:
         # logger.success("模型及数据加载成功，开始训练...")
         for epoch_index in range(epoch):
+
             # 开始一个轮次，初始化开始时间，损失值
             start_time = time.time()
             total_loss = 0
@@ -90,11 +92,14 @@ def train(train_dataloader):
                 loss.backward()  # 反向传播
                 optimizer.step()  # 参数更新
                 total_loss += loss.item()
+
             # 一个轮次训练完成，输出结果
             end_time = time.time()
+            time_epoch_10 += (end_time - start_time)
             if (epoch_index + 1) % 10 == 0:
-                scheduler.step()
-                logger.info(f"当前Epoch:{epoch_index + 1}, 当前总loss:{total_loss:.2f}, 本轮次用时：{end_time - start_time:.2f}秒")
+                # scheduler.step()
+                logger.info(f"当前Epoch:{epoch_index + 1}, 当前总loss:{total_loss:.2f}, 该批10轮次用时：{time_epoch_10:.2f}秒")
+                time_epoch_10 = 0
     except Exception as e:
         logger.error(f"模型训练时发生错误，错误信息：{e}")
     # 所有轮次训练完成，保存模型
@@ -103,7 +108,7 @@ def train(train_dataloader):
         torch.save(model.state_dict(), param.save_model)
         logger.success(f"模型保存成功！")
     except Exception as e:
-        logger.error(f"保存模型错误，错误信息：{e}")
+        logger.error(f"保存模型错误|，错误信息：{e}")
     finally:
         logger.info(f"训练完成，共耗时：{(time.time() - start_time_all):.2f}秒")
 
