@@ -11,4 +11,8 @@
 ### 案例一：手机价格预测
 项目地址：https://github.com/davidsongtao/llm_demos/tree/master/1_phone_price_prediction
 
-### 案例二：待更新...
+### 案例二：多风格翻译机
+基于通义API调用实现多风格英语翻译中文，包括默认风格，古文风格，学术风格，琼瑶风格等。
+项目地址：https://github.com/davidsongtao/llm_demos/tree/master/2_multi_style_translator
+
+### 案例三：待更新...
