@@ -22,13 +22,16 @@ import streamlit as st
 def get_response(prompt, memory):
     """通过API调用大模型"""
     API_KEY = "your_api_key"
-    model = Tongyi(
-        model="qwen-max",
-        api_key=API_KEY
-    )
-    chain = ConversationChain(llm=model, memory=memory)
-    response = chain.invoke({"input": prompt})
-    return response['response']
+    try:
+        model = Tongyi(
+            model="qwen-max",
+            api_key=API_KEY
+        )
+        chain = ConversationChain(llm=model, memory=memory)
+        response = chain.invoke({"input": prompt})
+        return response['response']
+    except Exception as e:
+        print(f"调用大模型时发生错误！错误代码：{e}")
 
 
 def generate_res(res):
