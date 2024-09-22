@@ -15,4 +15,6 @@
 基于通义API调用实现多风格英语翻译中文，包括默认风格，古文风格，学术风格，琼瑶风格等。
 项目地址：https://github.com/davidsongtao/llm_demos/tree/master/2_multi_style_translator
 
-### 案例三：待更新...
+### 案例三：获取北京当前天气APP
+基于function call调用单个函数实现获取北京当前天气，function call实现原理如下图所示：
+项目地址：https://github.com/davidsongtao/llm_demos/tree/master/2_multi_style_translator
