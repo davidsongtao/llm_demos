@@ -18,8 +18,4 @@
 
 ### 案例三：获取北京当前天气APP
 基于function call调用单个函数实现获取北京当前天气，function call实现原理如下图所示：
-
 项目地址：https://github.com/davidsongtao/llm_demos/tree/master/3_weather_chat
-
-
-![function_call_process](https://github.com/user-attachments/assets/faa4fbd9-e0f7-4d2b-817a-49bfbdf4aa07)
