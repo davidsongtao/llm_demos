@@ -87,7 +87,7 @@ def parse_response(response):
 
 def llm_query(message, tools=None, tool_choice=None):
     """调用大模型API，传入prompt,获取模型返回结果"""
-    ZHIPU_API_KEY = "87227d2fac86297bb60e762d9063389f.2BLXetwOheTLtjMD"
+    ZHIPU_API_KEY = "your_api_key"
     client = ZhipuAI(api_key=ZHIPU_API_KEY)
     ChatGLM = "glm-4"
     try:
