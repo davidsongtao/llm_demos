@@ -17,5 +17,11 @@
 项目地址：https://github.com/davidsongtao/llm_demos/tree/master/2_multi_style_translator
 
 ### 案例三：获取北京当前天气APP
-基于function call调用单个函数实现获取北京当前天气，function call实现原理如下图所示：
+基于function call调用单个函数实现获取北京当前天气。
+
 项目地址：https://github.com/davidsongtao/llm_demos/tree/master/3_weather_chat
+
+### 案例四：航班助手
+基于function call调用多个函数实现查询航班号及航班票价。
+
+项目地址：https://github.com/davidsongtao/llm_demos/tree/master/4_flight_query
