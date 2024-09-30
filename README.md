@@ -25,3 +25,7 @@
 基于function call调用多个函数实现查询航班号及航班票价。
 
 项目地址：https://github.com/davidsongtao/llm_demos/tree/master/4_flight_query
+
+### 案例五：基于业务数据库的聊天机器人
+
+项目地址：https://github.com/davidsongtao/llm_demos/tree/master/5_SQL_query_with_NL
